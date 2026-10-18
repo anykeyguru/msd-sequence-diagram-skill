@@ -1,0 +1,23 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    # Pinned: ubuntu-latest moves to Ubuntu 26 (Oct 2026); move deliberately, checking
+    # that the oldest Python in the matrix is still offered there.
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      # Linux runner: the Sequence Diagram app is macOS-only; its check is tested with a stand-in path.
+      - name: Run tests
+        run: tests/run.sh

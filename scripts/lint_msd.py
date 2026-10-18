@@ -16,6 +16,8 @@ Exit code 0 = no errors, 1 = errors found.
 import re
 import sys
 
+__version__ = "1.1.0"
+
 FRAME_KW = ("alt", "opt", "loop", "par", "neg", "region", "group", "critical",
             "break", "rect")
 

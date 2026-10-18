@@ -12,7 +12,8 @@ description: >-
   actors, or components. Produces native .msd text (NOT Mermaid), following the
   app's exact conventions for participants, arrows, frames, notes, and
   activation. Prefer this over generic Mermaid output whenever the SequenceDiagram
-  app is the intended target.
+  app is the intended target. Requires /Applications/Sequence Diagram.app.
+  "/msd-sequence-diagram update" updates the skill from GitHub.
 ---
 
 # SequenceDiagram.app native `.msd` diagrams
@@ -21,6 +22,25 @@ Turn a text description (or code, or a user story) into a sequence diagram writt
 in the **native `.msd` DSL** of the macOS *SequenceDiagram* app. The output must
 open cleanly in that app and match its house conventions — this is deliberately
 **not** Mermaid, even though the two syntaxes rhyme.
+
+## Commands
+
+- **`/msd-sequence-diagram update`** (the argument `update`, or "обнови скилл msd" in
+  any words): do not draw anything. Run `bash <base directory>/scripts/update.sh`,
+  where the base directory is the one shown when this skill loaded, and report its
+  output in the conversation's language: old → new version and the list of changes,
+  or "already up to date". If it refuses (local changes, diverged copy), show its
+  message and the fix it suggests; do not force the update. The new version applies
+  from the next time the skill loads.
+
+## Requirement: the Sequence Diagram app
+
+The `.msd` file is made to be opened in **Sequence Diagram for Mac**
+(`/Applications/Sequence Diagram.app`, https://www.macsequencediagram.com). Before
+delivering, check it once with `bash <base directory>/scripts/check_app.sh`. If it is
+missing, still write and lint the file, but tell the user that opening it needs the
+app and where to get it; never install it without asking. In claude.ai (no shell),
+skip the check and mention the requirement in one line.
 
 ## Why native, not Mermaid
 
@@ -140,6 +160,8 @@ Browser-->>User: show result
   dividers, spacing, `#style` properties, found/lost messages, and the
   Mermaid-vs-native cheat sheet. Read it before writing.
 - `scripts/lint_msd.py` — heuristic linter; run on every generated file.
+- `scripts/check_app.sh` — checks that Sequence Diagram.app is installed.
+- `scripts/update.sh` — updates the installed skill from GitHub (`/msd-sequence-diagram update`).
 
 If the user explicitly wants **Mermaid** output instead (e.g. for GitHub or a
 `.mmd` file), the app also supports Mermaid — note the differences in the
