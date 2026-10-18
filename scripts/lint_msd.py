@@ -108,6 +108,17 @@ def lint(text):
             warnings.append((i, "'-x' / '-)' arrows are Mermaid-only; native has no "
                                 "cross/async arrowheads (see arrow table)."))
 
+        # --- Participant names --------------------------------------------
+        # `participant "Display Name" as code`: the display name is ALWAYS in
+        # quotes when an alias is given; the alias after `as` is what signals
+        # use as endpoints (code->other: ...). An unquoted name before `as`
+        # (participant Человек as user) breaks parsing in SequenceDiagram.app.
+        m = re.match(r"^(participant|actor)\s+(.+?)\s+as\s+(\S+)\s*$", line, re.IGNORECASE)
+        if m and not m.group(2).startswith('"'):
+            errors.append((i, "with an alias the display name must be quoted: "
+                              f'{m.group(1)} "{m.group(2)}" as {m.group(3)} — signals then '
+                              f"use the alias ({m.group(3)}->...)."))
+
         # --- Frame guard style -------------------------------------------
         m = re.match(r"^(alt|opt|loop|par|neg|region)\b(.*)$", low)
         if m:

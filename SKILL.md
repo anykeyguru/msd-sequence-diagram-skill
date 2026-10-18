@@ -75,7 +75,9 @@ them.
 - **Declare participants explicitly and in reading order** at the top when there
   are more than two, so left-to-right order is intentional rather than accidental.
   Alias long names: `participant "Payment Gateway" as pg`. Remember native alias
-  order is `"Display Name" as code`.
+  order is `"Display Name" as code`. **With `as` the display name is always quoted**, and the
+  alias is what every signal uses as its endpoint (`user->ui: ...`); an unquoted
+  `participant Name as code` breaks the file in the app (the linter rejects it).
 - **Arrow convention** (unless the user specifies otherwise): synchronous
   call/request `->` (solid filled); reply/return `-->>` (dotted open);
   async / fire-and-forget `->>` (solid open). Being consistent here is what makes

@@ -41,6 +41,12 @@ participant a
 a->b: Hello        # b is still drawn on the left
 ```
 
+**With an alias, the display name is always in quotes**: `participant "Display Name" as
+code`. The alias after `as` is the participant's identifier from then on — signals use it
+as the endpoint (`code->other: ...`), the quoted name is only what is drawn. An unquoted
+name before `as` (`participant Human as user`) breaks parsing in the app. Without an alias
+a bare single-word name is fine: `participant Alice`.
+
 **Alias order is native-specific**: display name FIRST, then `as`, then the short code:
 
 ```
@@ -353,6 +359,9 @@ These are the most common ways a diagram silently becomes Mermaid instead of nat
 - **Line breaks in messages**: native `\n`; Mermaid `<br/>`.
 - **Activation**: native shorthand is standalone `+b` / `-b` lines; Mermaid uses inline
   `->>+b`.
+- **Quoted name + alias**: `participant "Display Name" as code`; signals then use `code`.
+  Unquoted `participant Name as code` breaks parsing in the app. The linter treats it as an
+  ERROR.
 - **Title must be quoted**: `title "Text"` or `title` + `"""` block. Bare `title Text` (as in
   Mermaid's `title Text`) breaks the whole diagram in the app. The linter treats it as an ERROR.
 - **Long note/ref text**: the app never wraps it. Use a `"""` block with lines of at most
